@@ -1,0 +1,74 @@
+<md-card [ngClass]="settings.selectedTheme">
+  <md-card-title><h1>{{title}}</h1></md-card-title>
+  <md-card-content>
+    <div class="settings">
+      <md-select placeholder="Theme" [(ngModel)]="settings.selectedTheme" name="theme">
+        <md-option *ngFor="let theme of themes" [value]="theme.value">
+          {{theme.viewValue}}
+        </md-option>
+      </md-select>
+      <mat-input-container>
+        <input mdInput [max]="settings.until" [(ngModel)]="settings.since" [disabled]="true"
+               [matDatepicker]="sincePicker" placeholder="Since">
+        <md-icon mdSuffix md-icon-button [style.visibility]="!settings.since ? 'hidden' : 'visible'"
+                 (click)="onSinceUpdated(undefined)">
+          clear
+        </md-icon>
+        <button mdSuffix [mdDatepickerToggle]="sincePicker"></button>
+      </mat-input-container>
+      <md-datepicker #sincePicker startView="year"
+                     [startAt]="settings.since"
+                     (selectedChanged)="onSinceUpdated($event)">
+      </md-datepicker>
+      <mat-input-container>
+        <input mdInput [min]="settings.since" [(ngModel)]="settings.until" [disabled]="true"
+               [mdDatepicker]="untilPicker" placeholder="Until">
+        <md-icon mdSuffix md-icon-button [style.visibility]="!settings.until ? 'hidden' : 'visible'"
+                 (click)="onUntilUpdated(undefined)">
+          clear
+        </md-icon>
+        <button mdSuffix [mdDatepickerToggle]="untilPicker"></button>
+      </mat-input-container>
+      <md-datepicker #untilPicker startView="year"
+                     [startAt]="settings.until"
+                     (selectedChanged)="onUntilUpdated($event)">
+      </md-datepicker>
+      <md-select [ngModel]="settings.pageSize" (change)="onPageSizeChanged($event)"
+                 placeholder="Number of results">
+        <md-option *ngFor="let pageSize of pageSizeOptions" [value]="pageSize">
+          {{ pageSize }}
+        </md-option>
+      </md-select>
+      <md-icon id="refreshTweetsButton" mdSuffix md-icon-button mdTooltip="TWEETS PLEASE !!!!"
+               (click)="onFetchingNewest()">
+        refresh
+      </md-icon>
+      <div class="columns">
+        <label>Drag to order columns</label>
+        <md-chip-list dnd-droppable dnd-sortable-container [sortableData]="settings.tableOptions.columnDefs">
+          <md-chip *ngFor="let columnDef of settings.tableOptions.columnDefs; let i = index"
+                   dnd-sortable [sortableIndex]="i"
+                   (onDropSuccess)="onColumnMoved()">
+            {{columnDef.headName}}
+          </md-chip>
+        </md-chip-list>
+      </div>
+    </div>
+    <md-tab-group>
+      <md-tab label="@AppDirect">
+        <app-tweets-table [tableOptions]="settings.tableOptions"
+                          [dataChange]="appDirectDataChange">
+        </app-tweets-table>
+      </md-tab>
+      <md-tab label="@laughingSquid">
+        <app-tweets-table [tableOptions]="settings.tableOptions"
+                          [dataChange]="laughingSquidDataChange">
+      </app-tweets-table></md-tab>
+      <md-tab label="@techCrunch">
+        <app-tweets-table [tableOptions]="settings.tableOptions"
+                          [dataChange]="techCrunchDataChange">
+        </app-tweets-table>
+      </md-tab>
+    </md-tab-group>
+  </md-card-content>
+</md-card>

@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons')
+@import url('~ng2-dnd/bundles/style.css')
+
+@import '~@angular/material/theming'
+@include mat-core()
+
+// default theme
+$primary: mat-palette($mat-orange, 800)
+$accent:  mat-palette($mat-light-blue, 600, 100, 800)
+$warn:    mat-palette($mat-red, 600)
+$theme:   mat-light-theme($primary, $accent, $warn)
+@include angular-material-theme($theme)
+.default-theme
+  @include angular-material-theme($theme)
+
+// Define an alternate dark theme.
+$dark-primary: mat-palette($mat-blue-grey)
+$dark-accent:  mat-palette($mat-amber, A200, A100, A400)
+$dark-warn:    mat-palette($mat-deep-orange)
+$dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn)
+$foreground:   map-get($theme, foreground)
+$background:   map-get($dark-theme, background)
+.dark-theme
+  @include angular-material-theme($dark-theme)
+  color: mat-color($foreground, text)
+  background-color: mat-color($background, card)
+
+.settings
+  margin: 15px
+
+a:hover, a:visited, a:link, a:active
+  color: rgb(29, 161, 242)
+  text-decoration: none
+
+  &:hover
+    cursor: auto
+    display: inline
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+    font-weight: normal
+    height: auto
+    letter-spacing: 0.27px
+    text-size-adjust: 100%
+    width: auto
+
+body
+  margin: 0

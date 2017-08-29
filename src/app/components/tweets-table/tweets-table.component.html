@@ -1,0 +1,22 @@
+<div class="example-container">
+  <md-table #table [dataSource]="dataSource" mdSort>
+    <ng-container
+      *ngFor='let column of tableOptions.columnDefs'
+      [cdkColumnDef]='column.columnDef'>
+      <md-header-cell *cdkHeaderCellDef md-sort-header> {{column.headName}} </md-header-cell>
+      <md-cell *cdkCellDef="let row" [ngSwitch]="column.columnDef">
+        <a *ngSwitchCase="'text'" href="{{row['tweet_url']}}">{{row[column.columnDef]}}</a>
+        <span *ngSwitchCase="'retweeted_by'">
+          <a *ngIf="row['retweeted_by']; else elseBlock"
+             href="{{row['retweeted_user_profile_url']}}">{{row['retweeted_by']}}</a>
+          <ng-template #elseBlock>Not retweeted</ng-template>
+          <!--<a *ngIf="" href="{{row['retweeted_user_profile_url']}}">{{row['retweeted_by']}}</a>-->
+        </span>
+        <span *ngSwitchDefault>{{row[column.columnDef]}}</span>
+      </md-cell>
+    </ng-container>
+
+    <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+    <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+  </md-table>
+</div>
