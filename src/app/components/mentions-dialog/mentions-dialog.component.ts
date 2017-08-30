@@ -13,9 +13,4 @@ export class MentionsDialogComponent {
     @Inject(MD_DIALOG_DATA) public data: {mentions: Array<{name: string, profile_url: string}>}) {
       this.mentions = data.mentions;
   }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
 }

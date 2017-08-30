@@ -46,7 +46,7 @@ export class TweetsTableComponent implements OnInit, OnChanges {
 
   openMentions(mentions: Array<{name: string, profile_url: string}>) {
     this.dialog.open(MentionsDialogComponent, {
-      width: '400px',
+      // width: '400px',
       data: { mentions: mentions }
     });
   }
