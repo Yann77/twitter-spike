@@ -2,7 +2,9 @@
   <md-card-title><h1>{{title}}</h1></md-card-title>
   <md-card-content>
     <div class="settings">
-      <md-select placeholder="Theme" [(ngModel)]="settings.selectedTheme" name="theme">
+      <md-select class="theme" placeholder="Theme"
+                 [(ngModel)]="settings.selectedTheme" name="theme"
+                 (change)="onThemeChanged()">
         <md-option *ngFor="let theme of themes" [value]="theme.value">
           {{theme.viewValue}}
         </md-option>
@@ -33,16 +35,18 @@
                      [startAt]="settings.until"
                      (selectedChanged)="onUntilUpdated($event)">
       </md-datepicker>
-      <md-select [ngModel]="settings.pageSize" (change)="onPageSizeChanged($event)"
-                 placeholder="Number of results">
-        <md-option *ngFor="let pageSize of pageSizeOptions" [value]="pageSize">
-          {{ pageSize }}
-        </md-option>
-      </md-select>
-      <md-icon id="refreshTweetsButton" mdSuffix md-icon-button mdTooltip="TWEETS PLEASE !!!!"
-               (click)="onFetchingNewest()">
-        refresh
-      </md-icon>
+      <div class="page-size">
+        <md-select class="page-size" [ngModel]="settings.pageSize" (change)="onPageSizeChanged($event)"
+                   placeholder="Number of results">
+          <md-option *ngFor="let pageSize of pageSizeOptions" [value]="pageSize">
+            {{ pageSize }}
+          </md-option>
+        </md-select>
+        <md-icon id="refreshTweetsButton" mdSuffix md-icon-button mdTooltip="TWEETS PLEASE !!!!"
+                 (click)="onFetchingNewest()">
+          refresh
+        </md-icon>
+      </div>
       <div class="columns">
         <label>Drag to order columns</label>
         <md-chip-list dnd-droppable dnd-sortable-container [sortableData]="settings.tableOptions.columnDefs">

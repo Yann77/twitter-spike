@@ -3,8 +3,10 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Settings, TweetsData} from './components/tweets-table/tweets-table.definitions';
-import {MdSelectChange, OverlayContainer, PageEvent} from '@angular/material';
-import {TableOptions} from './components/tweets-table/tweets-table.component';
+import {MdSelectChange, OverlayContainer} from '@angular/material';
+import {AsyncLocalStorage} from 'angular-async-local-storage';
+
+const TWITTER_SETTINGS_KEY = 'twitter-settings';
 
 @Component({
   selector: 'app-root',
@@ -48,27 +50,40 @@ export class AppComponent implements OnInit {
 
   constructor(private overlayContainer: OverlayContainer,
               private httpClient: HttpClient,
-              private datePipe: DatePipe) {
+              private datePipe: DatePipe,
+              protected storage: AsyncLocalStorage) {
                 overlayContainer.themeClass = 'selectedTheme';
   }
 
   ngOnInit() {
-    this.fetchAllTweets();
+    this.storage.getItem(TWITTER_SETTINGS_KEY).subscribe((settings) => {
+      if (settings != null) {
+       this.settings = settings;
+      }
+      this.fetchAllTweets();
+    }, () => {});
+  }
+
+  onThemeChanged() {
+    this.saveSettings();
   }
 
   onSinceUpdated(since: Date) {
     this.settings.since = since;
+    this.saveSettings();
     this.fetchAllTweets();
   }
 
   onUntilUpdated(until: Date) {
     this.settings.until = until;
+    this.saveSettings();
     this.fetchAllTweets();
   }
 
   onPageSizeChanged(pageSize: MdSelectChange) {
    if (pageSize.value !== this.settings.pageSize) {
      this.settings.pageSize = pageSize.value;
+     this.saveSettings();
      this.fetchAllTweets();
    }
   }
@@ -80,6 +95,15 @@ export class AppComponent implements OnInit {
   onColumnMoved() {
     const tableOptionsCopy = { ...this.settings.tableOptions };
     this.settings.tableOptions = tableOptionsCopy;
+    this.saveSettings();
+  }
+
+  private saveSettings() {
+    this.storage.setItem(TWITTER_SETTINGS_KEY, this.settings).subscribe(() => {
+      // Done
+    }, () => {
+      throw new Error('Local storage error');
+    });
   }
 
   private fetchAllTweets() {

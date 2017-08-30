@@ -4,11 +4,13 @@
       *ngFor='let column of tableOptions.columnDefs'
       [cdkColumnDef]='column.columnDef'>
       <md-header-cell *cdkHeaderCellDef md-sort-header
-                      [ngClass]="column.columnDef === 'created_at' ? 'created-at': ''">
+                      [ngClass]="column.columnDef === 'created_at' ? 'created-at':
+                                 column.columnDef === 'retweeted_by' ? 'retweeted-by': ''">
         {{column.headName}}
       </md-header-cell>
       <md-cell *cdkCellDef="let row" [ngSwitch]="column.columnDef"
-               [ngClass]="column.columnDef === 'created_at' ? 'created-at': ''">
+               [ngClass]="column.columnDef === 'created_at' ? 'created-at':
+                          column.columnDef === 'retweeted_by' ? 'retweeted-by': ''">
         <a *ngSwitchCase="'text'" href="{{row['tweet_url']}}">{{row[column.columnDef]}}</a>
         <span *ngSwitchCase="'retweeted_by'">
           <a *ngIf="row['retweeted_by']; else elseBlock"

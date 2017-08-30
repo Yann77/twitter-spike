@@ -16,6 +16,7 @@ import {DatePipe} from '@angular/common';
 import {AppComponent} from './app.component';
 import {TweetsTableComponent} from './components/tweets-table/';
 import {DndModule} from 'ng2-dnd';
+import {AsyncLocalStorageModule} from 'angular-async-local-storage';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {DndModule} from 'ng2-dnd';
     MdIconModule,
     MdTooltipModule,
     MdChipsModule,
+    AsyncLocalStorageModule,
     DndModule.forRoot(),
   ],
   providers: [DatePipe],
