@@ -5,12 +5,14 @@
       [cdkColumnDef]='column.columnDef'>
       <md-header-cell *cdkHeaderCellDef md-sort-header
                       [ngClass]="column.columnDef === 'created_at' ? 'created-at':
-                                 column.columnDef === 'retweeted_by' ? 'retweeted-by': ''">
+                                 column.columnDef === 'retweeted_by' ? 'retweeted-by':
+                                 column.columnDef === 'user_mentions_count' ? 'user-mentions-count': ''">
         {{column.headName}}
       </md-header-cell>
       <md-cell *cdkCellDef="let row" [ngSwitch]="column.columnDef"
                [ngClass]="column.columnDef === 'created_at' ? 'created-at':
-                          column.columnDef === 'retweeted_by' ? 'retweeted-by': ''">
+                          column.columnDef === 'retweeted_by' ? 'retweeted-by':
+                          column.columnDef === 'user_mentions_count' ? 'user-mentions-count': ''">
         <a *ngSwitchCase="'text'" href="{{row['tweet_url']}}">{{row[column.columnDef]}}</a>
         <span *ngSwitchCase="'retweeted_by'">
           <a *ngIf="row['retweeted_by']; else elseBlock"
@@ -19,12 +21,12 @@
           <ng-template #elseBlock>Not retweeted</ng-template>
         </span>
         <span *ngSwitchCase="'user_mentions_count'">
-          <button md-mini-fab *ngIf="row['user_mentions_count'] > 0; else elseBlock"
+          <button md-mini-fab color="primary"
+                  *ngIf="row['user_mentions_count'] > 0"
              href="#" (click)="openMentions(row['user_mentions'])"
-             mdTooltip="See mention details">
+             mdTooltip="See mentions...">
             {{row[column.columnDef]}}
           </button>
-          <ng-template #elseBlock>{{row[column.columnDef]}}</ng-template>
         </span>
         <span *ngSwitchDefault>{{row[column.columnDef]}}</span>
       </md-cell>
