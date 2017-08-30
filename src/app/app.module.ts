@@ -3,7 +3,8 @@ import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
 import {
-  MdCardModule, MdChipsModule, MdDatepickerModule, MdIconModule, MdInputModule, MdNativeDateModule,
+  MdButtonModule,
+  MdCardModule, MdChipsModule, MdDatepickerModule, MdIconModule, MdInputModule, MdListModule, MdNativeDateModule,
   MdSelectModule,
   MdSortModule,
   MdTabsModule, MdTooltipModule,
@@ -17,11 +18,13 @@ import {AppComponent} from './app.component';
 import {TweetsTableComponent} from './components/tweets-table/';
 import {DndModule} from 'ng2-dnd';
 import {AsyncLocalStorageModule} from 'angular-async-local-storage';
+import {MentionsDialogComponent} from './components/mentions-dialog/mentions-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TweetsTableComponent,
+    MentionsDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,12 @@ import {AsyncLocalStorageModule} from 'angular-async-local-storage';
     MdTooltipModule,
     MdChipsModule,
     AsyncLocalStorageModule,
+    MdListModule,
+    MdButtonModule,
     DndModule.forRoot(),
+  ],
+  entryComponents: [
+    MentionsDialogComponent,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

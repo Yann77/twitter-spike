@@ -1,4 +1,4 @@
-<div class="example-container">
+<div class="tweets-container">
   <md-table #table [dataSource]="dataSource" mdSort>
     <ng-container
       *ngFor='let column of tableOptions.columnDefs'
@@ -14,8 +14,17 @@
         <a *ngSwitchCase="'text'" href="{{row['tweet_url']}}">{{row[column.columnDef]}}</a>
         <span *ngSwitchCase="'retweeted_by'">
           <a *ngIf="row['retweeted_by']; else elseBlock"
-             href="{{row['retweeted_user_profile_url']}}">{{row['retweeted_by']}}</a>
+             href="{{row['retweeted_user_profile_url']}}">{{row['retweeted_by']}}
+          </a>
           <ng-template #elseBlock>Not retweeted</ng-template>
+        </span>
+        <span *ngSwitchCase="'user_mentions_count'">
+          <button md-mini-fab *ngIf="row['user_mentions_count'] > 0; else elseBlock"
+             href="#" (click)="openMentions(row['user_mentions'])"
+             mdTooltip="See mention details">
+            {{row[column.columnDef]}}
+          </button>
+          <ng-template #elseBlock>{{row[column.columnDef]}}</ng-template>
         </span>
         <span *ngSwitchDefault>{{row[column.columnDef]}}</span>
       </md-cell>

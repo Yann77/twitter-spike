@@ -40,6 +40,10 @@ export class AppComponent implements OnInit {
           columnDef: 'retweeted_by',
           headName: 'Retweeted by'
         },
+        {
+          columnDef: 'user_mentions_count',
+          headName: 'Mentions count',
+        },
       ],
     },
     selectedTheme: 'default-theme',
@@ -133,6 +137,13 @@ export class AppComponent implements OnInit {
             text: tweetData.text,
             created_at: this.datePipe.transform(tweetData.created_at, 'yyyy-MM-dd'),
             tweet_url: `https://twitter.com/${subject}/status/${tweetData.id_str}`,
+            user_mentions_count: tweetData.entities.user_mentions.length,
+            user_mentions: tweetData.entities.user_mentions.map((user_mention) => {
+              return {
+                name: user_mention.name,
+                profile_url: `https://twitter.com/${user_mention.screen_name}`,
+              };
+            }),
           };
 
           if (tweetData.retweeted_status) {

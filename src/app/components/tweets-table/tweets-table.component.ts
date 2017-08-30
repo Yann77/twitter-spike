@@ -3,7 +3,8 @@ import {
 } from '@angular/core';
 import {TwitterApi, TwitterDataSource} from './twitter-datasource';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {MdSort} from '@angular/material';
+import {MdDialog, MdSort} from '@angular/material';
+import {MentionsDialogComponent} from '../mentions-dialog/mentions-dialog.component';
 
 @Component({
   moduleId: module.id,
@@ -20,7 +21,8 @@ export class TweetsTableComponent implements OnInit, OnChanges {
   tableOptions: TableOptions;
   @ViewChild(MdSort) sort: MdSort;
 
-  constructor(private changeDetector: ChangeDetectorRef) {
+  constructor(private changeDetector: ChangeDetectorRef,
+              public dialog: MdDialog) {
     this.displayedColumns = [];
     this.tableOptions = {columnDefs: []} as TableOptions;
   }
@@ -40,6 +42,13 @@ export class TweetsTableComponent implements OnInit, OnChanges {
       this.displayedColumns = this.getDisplayedColumns();
       this.changeDetector.detectChanges();
     }
+  }
+
+  openMentions(mentions: Array<{name: string, profile_url: string}>) {
+    this.dialog.open(MentionsDialogComponent, {
+      width: '400px',
+      data: { mentions: mentions }
+    });
   }
 
   private getDisplayedColumns(): String[] {
